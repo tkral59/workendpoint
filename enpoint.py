@@ -9,10 +9,10 @@ EP_URL = 'https://workendpoint.onrender.com'
 @app.route('/notifications', methods=["GET"])
 def handle_ebay_notification():
     challenge = request.args.get("challenge_code")
-    if not challenge_code:
+    if not challenge:
         return jsonify({"error": "Missing challenge_code"}), 400
 
-    to_hash = challenge_code + VERIFICATION + EP_URL
+    to_hash = challenge + VERIFICATION + EP_URL
     hash_obj = hashlib.sha256(to_hash.encode('utf-8'))
     challenge_response = hash_obj.hexdigest()
 
