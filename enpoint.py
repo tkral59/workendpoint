@@ -19,5 +19,11 @@ def handle_ebay_notification():
 
     return jsonify({"status": "received"}), 200
 
+@app.route('/')
+def home():
+    return "Endpoint is up!"
+
 if __name__ == "__main__":
     app.run()
+
+
