@@ -1,27 +1,26 @@
+import hashlib
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 VERIFICATION = "verifyToken_72cbd3b2-8fa9-41d4-a7e5-d234cf482fbe"
+EP_URL = 'https://workendpoint.onrender.com'
 
-@app.route('/api/ebay/deletion', methods=["POST"])
+@app.route('/notifications', methods=["GET"])
 def handle_ebay_notification():
-    data = request.json
+    challenge = request.args.get("challenge_code")
+    if not challenge_code:
+        return jsonify({"error": "Missing challenge_code"}), 400
 
-    if "challengeCode" in data:
-        if data.get("verificationToken") == VERIFICATION:
-            return jsonify({"challengeResponse": data["challengeCode"]})
-        else:
-            return jsonify({"error": "Invalid token"}), 401
-        
-    ebay_user_id = data.get("userId")
-    print(f"eBay account deletion for user: {ebay_user_id}")
+    to_hash = challenge_code + VERIFICATION + EP_URL
+    hash_obj = hashlib.sha256(to_hash.encode('utf-8'))
+    challenge_response = hash_obj.hexdigest()
 
-    return jsonify({"status": "received"}), 200
+    return jsonify({"challengeResponse": challenge_response}), 200
 
 @app.route('/')
-def home():
-    return "Endpoint is up!"
+def index():
+    return "eBay Endpoint is running", 200
 
 if __name__ == "__main__":
     app.run()
