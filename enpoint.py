@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 VERIFICATION = "verifyToken_72cbd3b2-8fa9-41d4-a7e5-d234cf482fbe"
-EP_URL = 'https://workendpoint.onrender.com'
+EP_URL = 'https://workendpoint.onrender.com/notifications'
 
 @app.route('/notifications', methods=["GET"])
 def handle_ebay_notification():
